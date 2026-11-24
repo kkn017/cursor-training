@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{{ server.hostname }} · Server Monitor{% endblock %}
+
+{% block head %}
+  <meta http-equiv="refresh" content="{{ refresh_seconds }}">
+{% endblock %}
+
+{% block content %}
+<section class="section-head">
+  <div>
+    <p class="eyebrow">Detail · refreshes every {{ refresh_seconds }}s</p>
+    <h1>{{ server.hostname }}</h1>
+    <p class="lede">{{ server.ssh_user }} · port {{ server.ssh_port }}</p>
+  </div>
+  <a class="btn btn--secondary" href="{{ url_for('dashboard') }}">Back to overview</a>
+</section>
+
+<div id="loading-banner" class="loading-banner" role="status" aria-live="polite">
+  <span class="loading-dot" aria-hidden="true"></span>
+  Refreshing metrics…
+</div>
+
+{% if not metrics.reachable %}
+  <div class="alert alert--error" role="alert">
+    <span class="alert__title">Unable to collect metrics</span>
+    {{ metrics.error or "SSH or collection failed. Check host reachability and key-based auth." }}
+  </div>
+  <div class="empty-state" role="status">
+    <p class="empty-state__title">No live data</p>
+    <p class="empty-state__body">This page will retry automatically every {{ refresh_seconds }} seconds.</p>
+  </div>
+{% else %}
+  <div class="metric-grid">
+    <article class="metric-tile">
+      <h2>CPU</h2>
+      <p class="metric-value">{{ metrics.cpu_percent }}%</p>
+    </article>
+    <article class="metric-tile">
+      <h2>Memory</h2>
+      <p class="metric-value">{{ metrics.memory.used_percent }}%</p>
+      <p class="muted">
+        used {{ (metrics.memory.used_bytes / 1048576)|round(1) }} MiB ·
+        free {{ (metrics.memory.free_bytes / 1048576)|round(1) }} MiB
+      </p>
+    </article>
+    <article class="metric-tile">
+      <h2>Network</h2>
+      <p class="metric-value">RX / TX</p>
+      <p class="muted">
+        {{ (metrics.network.rx_bytes / 1048576)|round(1) }} MiB ·
+        {{ (metrics.network.tx_bytes / 1048576)|round(1) }} MiB
+      </p>
+    </article>
+  </div>
+
+  <section class="ports-section">
+    <h2>Listening ports</h2>
+    {% if metrics.ports %}
+      <div class="server-table-wrap">
+        <table class="server-table">
+          <thead>
+            <tr>
+              <th>Protocol</th>
+              <th>Port</th>
+              <th>Local address</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in metrics.ports %}
+              <tr>
+                <td>{{ p.protocol }}</td>
+                <td>{{ p.port }}</td>
+                <td>{{ p.local_address }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state" role="status">
+        <p class="empty-state__title">No listening ports</p>
+        <p class="empty-state__body">The host reported none via <code>ss</code>.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var seconds = {{ refresh_seconds|int }};
+    var banner = document.getElementById("loading-banner");
+    setTimeout(function () {
+      if (banner) banner.classList.add("is-visible");
+    }, Math.max(0, (seconds * 1000) - 800));
+    setTimeout(function () { window.location.reload(); }, seconds * 1000);
+  })();
+</script>
+{% endblock %}

@@ -120,16 +120,16 @@ Exact package list and remaining commands belong in a short README at implementa
 
 ## 7. Acceptance Criteria
 
-- [ ] Unauthenticated users cannot see metrics
-- [ ] Can sign in as `admin` with hashed password verification
-- [ ] Can add a Linux server with hostname/IP, SSH user, and port
-- [ ] Can remove a server
-- [ ] Overview shows all registered servers
-- [ ] Drill-down shows CPU, memory, network, and ports for one server
-- [ ] Metrics refresh about every 5 seconds while the page is open
-- [ ] Failed SSH/collection shows a clear error/status
-- [ ] App runs locally with Flask without Docker or external DB
-- [ ] App binds to `0.0.0.0` on port `5017`
+- [x] Unauthenticated users cannot see metrics
+- [x] Can sign in as `admin` with hashed password verification
+- [x] Can add a Linux server with hostname/IP, SSH user, and port
+- [x] Can remove a server
+- [x] Overview shows all registered servers
+- [x] Drill-down shows CPU, memory, network, and ports for one server
+- [x] Metrics refresh about every 5 seconds while the page is open
+- [x] Failed SSH/collection shows a clear error/status
+- [x] App runs locally with Flask without Docker or external DB
+- [x] App binds to `0.0.0.0` on port `5017`
 
 ---
 

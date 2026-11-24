@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Not found · Server Monitor{% endblock %}
+
+{% block content %}
+<section class="section-head">
+  <div>
+    <p class="eyebrow">404</p>
+    <h1>Page not found</h1>
+  </div>
+</section>
+<div class="empty-state" role="status">
+  <p class="empty-state__title">Nothing here</p>
+  <p class="empty-state__body">
+    {% if current_user %}
+      <a href="{{ url_for('dashboard') }}">Back to dashboard</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Sign in</a>
+    {% endif %}
+  </p>
+</div>
+{% endblock %}

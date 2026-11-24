@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Servers · Server Monitor{% endblock %}
+
+{% block content %}
+<section class="section-head">
+  <div>
+    <p class="eyebrow">Registry</p>
+    <h1>Add / remove servers</h1>
+    <p class="lede">Store hostname, SSH user, and port locally. Collection uses your SSH key.</p>
+  </div>
+  <a class="btn btn--secondary" href="{{ url_for('dashboard') }}">View dashboard</a>
+</section>
+
+{% if error %}
+  <div class="alert alert--error" role="alert">
+    <span class="alert__title">Could not add server</span>
+    {{ error }}
+  </div>
+{% endif %}
+
+<form class="stack-form panel" method="post" action="{{ url_for('servers') }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label>
+    Hostname / IP
+    <input type="text" name="hostname" required placeholder="192.168.1.10 or host.local"
+           value="{{ form.hostname if form else '' }}">
+  </label>
+  <label>
+    SSH user
+    <input type="text" name="ssh_user" required placeholder="ubuntu"
+           value="{{ form.ssh_user if form else '' }}">
+  </label>
+  <label>
+    SSH port
+    <input type="number" name="ssh_port" min="1" max="65535" required
+           value="{{ form.ssh_port if form else '22' }}">
+  </label>
+  <button type="submit" class="btn">Add server</button>
+</form>
+
+{% if servers %}
+  <div class="server-table-wrap">
+    <table class="server-table">
+      <thead>
+        <tr>
+          <th>Host</th>
+          <th>User</th>
+          <th>Port</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in servers %}
+          <tr>
+            <td><a href="{{ url_for('server_detail', server_id=s.id) }}">{{ s.hostname }}</a></td>
+            <td>{{ s.ssh_user }}</td>
+            <td>{{ s.ssh_port }}</td>
+            <td>
+              <form method="post" action="{{ url_for('remove_server', server_id=s.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="link-button danger">Remove</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="empty-state" role="status">
+    <p class="empty-state__title">No servers registered</p>
+    <p class="empty-state__body">Use the form above to add a Linux host.</p>
+  </div>
+{% endif %}
+{% endblock %}

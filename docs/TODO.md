@@ -21,89 +21,89 @@ Each step includes **security** and **documentation**.
 
 ## 2. Sign-in and unit tests
 
-- [ ] Add `/login` and `/logout` with Flask sessions
-- [ ] Default user `admin` with **hashed** password
-- [ ] Protect app routes (redirect to login if not signed in)
-- [ ] Simple login form UI
-- [ ] **Security:** Hashed passwords only; `SECRET_KEY` from env; HttpOnly session cookie
-- [ ] **Docs:** Document `admin` login and env vars for local demo
-- [ ] Unit tests: login OK / fail, protected redirect, logout, hash verify
-- [ ] Run tests with `pytest`
+- [x] Add `/login` and `/logout` with Flask sessions
+- [x] Default user `admin` with **hashed** password
+- [x] Protect app routes (redirect to login if not signed in)
+- [x] Simple login form UI
+- [x] **Security:** Hashed passwords only; `SECRET_KEY` from env; HttpOnly session cookie
+- [x] **Docs:** Document `admin` login and env vars for local demo
+- [x] Unit tests: login OK / fail, protected redirect, logout, hash verify
+- [x] Run tests with `pytest`
 
 ---
 
 ## 3. CI/CD (GitHub Actions)
 
-- [ ] Add `.github/workflows/ci.yml`
-- [ ] On push/PR: install deps + run `pytest`
-- [ ] Keep workflow minimal (optional light lint only)
-- [ ] **Security:** Do not echo secrets in CI logs
-- [ ] **Docs:** One short README note on what CI runs
+- [x] Add `.github/workflows/ci.yml`
+- [x] On push/PR: install deps + run `pytest`
+- [x] Keep workflow minimal (optional light lint only)
+- [x] **Security:** Do not echo secrets in CI logs
+- [x] **Docs:** One short README note on what CI runs
 
 ---
 
 ## 4. Local server registry
 
-- [ ] Store servers locally (SQLite or JSON)
-- [ ] Fields: hostname/IP, SSH user, SSH port
-- [ ] Helpers: add, list, remove
-- [ ] **Security:** Validate host and port; keep credential-bearing files out of git
-- [ ] **Docs:** Where local server data is stored
-- [ ] Unit tests for add/list/remove + validation
+- [x] Store servers locally (SQLite or JSON)
+- [x] Fields: hostname/IP, SSH user, SSH port
+- [x] Helpers: add, list, remove
+- [x] **Security:** Validate host and port; keep credential-bearing files out of git
+- [x] **Docs:** Where local server data is stored
+- [x] Unit tests for add/list/remove + validation
 
 ---
 
 ## 5. Add / remove servers UI
 
-- [ ] Form: hostname/IP, SSH user, port
-- [ ] List servers; remove via POST
-- [ ] Require login for these actions
-- [ ] **Security:** CSRF protection (or equivalent); no delete via GET
-- [ ] **Docs:** How to add/remove a server in the UI
-- [ ] Tests: add/remove + auth required
+- [x] Form: hostname/IP, SSH user, port
+- [x] List servers; remove via POST
+- [x] Require login for these actions
+- [x] **Security:** CSRF protection (or equivalent); no delete via GET
+- [x] **Docs:** How to add/remove a server in the UI
+- [x] Tests: add/remove + auth required
 
 ---
 
 ## 6. SSH metrics collection
 
-- [ ] Add SSH library (e.g. Paramiko)
-- [ ] Collect: CPU %, memory used/free/%, network RX/TX, listening ports
-- [ ] Clear error when SSH/auth/collection fails
-- [ ] **Security:** Prefer SSH key; never log secrets; SSH timeouts; no unsafe remote command building from user input
-- [ ] **Docs:** Minimal local SSH setup for demo hosts
-- [ ] Unit tests with mocked SSH (success + failure)
+- [x] Add SSH library (e.g. Paramiko)
+- [x] Collect: CPU %, memory used/free/%, network RX/TX, listening ports
+- [x] Clear error when SSH/auth/collection fails
+- [x] **Security:** Prefer SSH key; never log secrets; SSH timeouts; no unsafe remote command building from user input
+- [x] **Docs:** Minimal local SSH setup for demo hosts
+- [x] Unit tests with mocked SSH (success + failure)
 
 ---
 
 ## 7. Dashboard overview
 
-- [ ] Overview of all servers (reachable, CPU %, memory %)
-- [ ] Link to per-server detail
-- [ ] Show unreachable/error state
-- [ ] **Security:** Read-only metrics; login required
-- [ ] **Docs:** Brief overview description in README
-- [ ] Tests: auth + mocked overview render
+- [x] Overview of all servers (reachable, CPU %, memory %)
+- [x] Link to per-server detail
+- [x] Show unreachable/error state
+- [x] **Security:** Read-only metrics; login required
+- [x] **Docs:** Brief overview description in README
+- [x] Tests: auth + mocked overview render
 
 ---
 
 ## 8. Server drill-down and 5s refresh
 
-- [ ] Detail page: CPU, memory, network, ports
-- [ ] Auto-refresh every **5 seconds**
-- [ ] Show collection errors on the page
-- [ ] **Security:** Do not expose SSH credentials in HTML/JS/responses
-- [ ] **Docs:** Note refresh interval and how to open detail view
-- [ ] Tests: detail auth + mocked metrics
+- [x] Detail page: CPU, memory, network, ports
+- [x] Auto-refresh every **5 seconds**
+- [x] Show collection errors on the page
+- [x] **Security:** Do not expose SSH credentials in HTML/JS/responses
+- [x] **Docs:** Note refresh interval and how to open detail view
+- [x] Tests: detail auth + mocked metrics
 
 ---
 
 ## 9. Demo polish
 
-- [ ] Empty/loading/error UI consistency
-- [ ] Check acceptance criteria in `docs/requirements.md`
-- [ ] **Security:** Final pass — hashed password, protected routes, no secrets in repo, input validation
-- [ ] **Docs:** Final README — local run on `0.0.0.0:5017`, login, add server, view metrics
-- [ ] Confirm CI is green
+- [x] Empty/loading/error UI consistency
+- [x] Check acceptance criteria in `docs/requirements.md`
+- [x] **Security:** Final pass — hashed password, protected routes, no secrets in repo, input validation
+- [x] **Docs:** Final README — local run on `0.0.0.0:5017`, login, add server, view metrics
+- [x] Confirm CI is green
 
 ---
 

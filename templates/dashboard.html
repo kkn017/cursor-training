@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard · Server Monitor{% endblock %}
+
+{% block content %}
+<section class="section-head">
+  <div>
+    <p class="eyebrow">Overview</p>
+    <h1>Servers</h1>
+    <p class="lede">Reachability, CPU, and memory for every registered host.</p>
+  </div>
+  <a class="btn btn--secondary" href="{{ url_for('servers') }}">Manage servers</a>
+</section>
+
+{% if not servers %}
+  <div class="empty-state" role="status">
+    <p class="empty-state__title">No servers yet</p>
+    <p class="empty-state__body"><a href="{{ url_for('servers') }}">Add a host</a> to start monitoring.</p>
+  </div>
+{% else %}
+  <div class="server-table-wrap">
+    <table class="server-table">
+      <thead>
+        <tr>
+          <th>Host</th>
+          <th>Status</th>
+          <th>CPU</th>
+          <th>Memory</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in servers %}
+          <tr>
+            <td>
+              <strong>{{ s.hostname }}</strong>
+              <div class="muted">{{ s.ssh_user }}@ · port {{ s.ssh_port }}</div>
+            </td>
+            <td>
+              {% if s.metrics.reachable %}
+                <span class="status-chip status-chip--ready">Reachable</span>
+              {% else %}
+                <span class="status-chip status-chip--error">Unreachable</span>
+                {% if s.metrics.error %}
+                  <div class="alert alert--error" style="margin-top:0.5rem;margin-bottom:0;" role="alert">
+                    <span class="alert__title">Collection failed</span>
+                    {{ s.metrics.error }}
+                  </div>
+                {% endif %}
+              {% endif %}
+            </td>
+            <td>
+              {% if s.metrics.cpu_percent is not none %}
+                {{ s.metrics.cpu_percent }}%
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td>
+              {% if s.metrics.memory %}
+                {{ s.metrics.memory.used_percent }}%
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td><a href="{{ url_for('server_detail', server_id=s.id) }}">Details</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}
